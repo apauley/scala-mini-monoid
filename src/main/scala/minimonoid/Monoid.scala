@@ -18,7 +18,7 @@ trait Monoid[A] extends Semigroup[A] {
 }
 
 object Monoid {
-  implicit class MonoidOps[A](m1: A)(implicit m: Monoid[A]) {
+  implicit class MonoidOps[A](m1: A)(implicit m: Semigroup[A]) {
     def |+|(m2: A): A = m.op(m1, m2)
   }
 }
