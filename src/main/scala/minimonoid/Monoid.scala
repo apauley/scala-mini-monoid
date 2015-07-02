@@ -74,4 +74,8 @@ object MonoidInstances {
     }
   }
 
+  implicit def tuple2Semigroup[A: Semigroup, B: Semigroup]: Semigroup[(A,B)] = new Semigroup[(A,B)] {
+    def op(x: (A, B), y: (A, B)): (A, B) = (x._1 |+| y._1, x._2 |+| y._2)
+  }
+
 }

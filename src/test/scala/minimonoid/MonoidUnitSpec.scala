@@ -44,4 +44,12 @@ class MonoidUnitSpec extends Specification {
       Option("") |+| None must_== Option("")
     }
   }
+
+  "The Tuple2 monoid" should {
+    "pass some concrete tests" in {
+      val t1 = (1,2)
+      val t2 = (0,6)
+      t1 |+| t2 must_== ((1,8))
+    }
+  }
 }
