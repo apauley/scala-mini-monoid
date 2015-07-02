@@ -47,6 +47,8 @@ trait Monoid[A] extends Semigroup[A] {
 
 object MonoidInstances {
 
+  import Semigroup.SemigroupOps
+
   implicit val intMonoid = new Monoid[Int] {
     def id: Int = 0
     def op(x: Int, y: Int): Int = x+y
@@ -57,20 +59,10 @@ object MonoidInstances {
     def op(x: String, y: String): String = x+y
   }
 
-  implicit val optionMonoidInt = new Monoid[Option[Int]] {
-    def id: Option[Int] = None
-    def op(ox: Option[Int], oy: Option[Int]): Option[Int] = (ox, oy) match {
-      case (Some(x), Some(y)) => Some(x + y)
-      case (None, None) => None
-      case (x, None) => x
-      case (None, y) => y
-    }
-  }
-
-  implicit val optionMonoidString = new Monoid[Option[String]] {
-    def id: Option[String] = None
-    def op(ox: Option[String], oy: Option[String]): Option[String] = (ox, oy) match {
-      case (Some(x), Some(y)) => Some(x ++ y)
+  implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
+    def id: Option[A] = None
+    def op(ox: Option[A], oy: Option[A]): Option[A] = (ox, oy) match {
+      case (Some(x), Some(y)) => Some(x |+| y)
       case (None, None) => None
       case (x, None) => x
       case (None, y) => y
