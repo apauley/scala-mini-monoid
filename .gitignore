@@ -18,3 +18,6 @@ project/plugins/project/
 
 # IntelliJ Idea specific
 .idea
+.idea_modules
+projectFilesBackup
+*.iml
