@@ -2,7 +2,7 @@ package minimonoid
 
 import org.specs2.mutable._
 
-import Monoid.MonoidOps
+import Semigroup.SemigroupOps
 import ExampleMonoids._
 
 class MonoidUnitSpec extends Specification {
