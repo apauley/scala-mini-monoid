@@ -48,13 +48,18 @@ trait Monoid[A] extends Semigroup[A] {
 object MonoidInstances {
 
   implicit val intMonoid = new Monoid[Int] {
-    override def id: Int = 0
-    override def op(x: Int, y: Int): Int = x+y
+    def id: Int = 0
+    def op(x: Int, y: Int): Int = x+y
+  }
+
+  implicit val stringMonoid = new Monoid[String] {
+    def id: String = ""
+    def op(x: String, y: String): String = x+y
   }
 
   implicit val optionMonoidInt = new Monoid[Option[Int]] {
-    override def id: Option[Int] = None
-    override def op(ox: Option[Int], oy: Option[Int]): Option[Int] = (ox, oy) match {
+    def id: Option[Int] = None
+    def op(ox: Option[Int], oy: Option[Int]): Option[Int] = (ox, oy) match {
       case (Some(x), Some(y)) => Some(x + y)
       case (None, None) => None
       case (x, None) => x

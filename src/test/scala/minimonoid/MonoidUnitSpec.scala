@@ -13,6 +13,14 @@ class MonoidUnitSpec extends Specification {
     }
   }
 
+  "The String monoid" should {
+    "pass some concrete tests" in {
+      "Hello, " |+| "world!" must_== "Hello, world!"
+      "Foo" |+| "" must_== "Foo"
+      "" |+| "Bar" must_== "Bar"
+    }
+  }
+
   "The Option monoid" should {
     "pass some concrete tests" in {
       Option(1) |+| Option(44) must_== Option(45)
