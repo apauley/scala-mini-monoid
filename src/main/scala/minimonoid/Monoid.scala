@@ -67,4 +67,14 @@ object MonoidInstances {
     }
   }
 
+  implicit val optionMonoidString = new Monoid[Option[String]] {
+    def id: Option[String] = None
+    def op(ox: Option[String], oy: Option[String]): Option[String] = (ox, oy) match {
+      case (Some(x), Some(y)) => Some(x ++ y)
+      case (None, None) => None
+      case (x, None) => x
+      case (None, y) => y
+    }
+  }
+
 }
