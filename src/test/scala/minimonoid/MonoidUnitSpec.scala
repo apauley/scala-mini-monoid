@@ -13,4 +13,10 @@ class MonoidUnitSpec extends Specification {
     }
   }
 
+  "The Option monoid" should {
+    "pass some concrete tests" in {
+      Option(1) |+| Option(44) must_== Option(45)
+      Option(1) |+| None must_== Option(1)
+    }
+  }
 }
