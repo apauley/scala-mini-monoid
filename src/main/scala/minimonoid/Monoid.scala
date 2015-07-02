@@ -44,3 +44,13 @@ object Semigroup {
 trait Monoid[A] extends Semigroup[A] {
   def id: A
 }
+
+object MonoidInstances {
+
+  implicit val intMonoid = new Monoid[Int] {
+    override def id: Int = 0
+
+    override def op(x: Int, y: Int): Int = x+y
+  }
+
+}
