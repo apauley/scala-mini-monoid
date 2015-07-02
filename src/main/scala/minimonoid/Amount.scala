@@ -2,9 +2,8 @@ package minimonoid
 
 object Amount {
 
-  implicit object GoatMonoid extends Monoid[Amount] {
+  implicit def amountMonoid: Monoid[Amount] = new Monoid[Amount] {
     def id: Amount = Amount(0, Goat)
-
     def op(x: Amount, y: Amount): Amount = Amount(x.amount + y.amount, id.currency)
   }
 
