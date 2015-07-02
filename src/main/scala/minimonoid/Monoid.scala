@@ -59,6 +59,11 @@ object MonoidInstances {
     def op(x: String, y: String): String = x+y
   }
 
+  implicit def listMonoid[A: Semigroup]: Monoid[List[A]] = new Monoid[List[A]] {
+    def id: List[A] = Nil
+    def op(x: List[A], y: List[A]): List[A] = x ++ y
+  }
+
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
     def id: Option[A] = None
     def op(ox: Option[A], oy: Option[A]): Option[A] = (ox, oy) match {

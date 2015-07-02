@@ -21,10 +21,20 @@ class MonoidUnitSpec extends Specification {
     }
   }
 
+  "The List monoid" should {
+    "pass some concrete tests" in {
+      List.empty[Int] |+| List(1,4) must_== List(1,4)
+      List(8,12) |+| List(1,4) must_== List(8,12,1,4)
+      List(List("hi", "bye"), List("foo")) |+| List(List("bar")) must_== List(List("hi", "bye"), List("foo"), List("bar"))
+      List(None, Some("x")) |+| Nil must_== List(None, Some("x"))
+    }
+  }
+
   "The Option monoid" should {
     "pass some concrete integer tests" in {
       Option(1) |+| Option(44) must_== Option(45)
       Option(1) |+| None must_== Option(1)
+      Option(Option(1)) |+| Option(Option(7)) must_== Option(Option(8))
     }
 
     "pass some concrete string tests" in {
