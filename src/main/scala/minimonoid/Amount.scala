@@ -8,7 +8,7 @@ object Amount {
   }
 
 
-  implicit class GoatOps(i: Int) {
+  implicit class AmountOps(i: Int) {
     def goats: Amount = Amount(i, Goat)
     def goat = goats
   }

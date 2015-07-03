@@ -3,7 +3,7 @@ package minimonoid
 import org.specs2.mutable._
 
 import Semigroup.SemigroupOps
-import Amount.GoatOps
+import Amount._
 
 class AmountUnitSpec extends Specification {
 
