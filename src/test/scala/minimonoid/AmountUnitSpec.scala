@@ -7,9 +7,10 @@ import Amount._
 
 class AmountUnitSpec extends Specification {
 
-  "The Goats monoid" should {
+  "The Amount monoid" should {
     "pass some concrete tests" in {
       3.goats |+| 1.goat must_== 4.goats
+      1.chicken |+| 7.chickens must_== 8.chickens
     }
   }
 

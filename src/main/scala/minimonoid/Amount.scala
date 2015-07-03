@@ -11,6 +11,9 @@ object Amount {
   implicit class AmountOps(i: Int) {
     def goats: Amount = Amount(i, Goat)
     def goat = goats
+
+    def chickens: Amount = Amount(i, Chicken)
+    def chicken = chickens
   }
 
 }
@@ -19,4 +22,6 @@ case class Amount(amount: Int, currency: StableCurrency)
 
 sealed trait StableCurrency
 sealed trait Livestock extends StableCurrency
-case object Goat extends Livestock
+
+case object Goat    extends Livestock
+case object Chicken extends Livestock
