@@ -45,6 +45,13 @@ class MonoidUnitSpec extends Specification {
     }
   }
 
+  "The Map monoid" should {
+    "pass some concrete tests" in {
+      Map.empty[Int, String] |+| Map(1 -> "foo", 4 -> "bar") must_== Map(1 -> "foo", 4 -> "bar")
+      Map(1 -> "foo", 2 -> "baz") |+| Map(1 -> "bar", 3 -> "hi") must_== Map(1 -> "foobar", 2 -> "baz", 3 -> "hi")
+    }
+  }
+
   "The Tuple2 monoid" should {
     "pass some concrete tests" in {
       val t1 = (1,2)

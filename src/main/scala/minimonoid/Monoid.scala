@@ -74,8 +74,33 @@ object MonoidInstances {
     }
   }
 
+  implicit def mapMonoid[K, V: Semigroup]: Monoid[Map[K, V]] = new Monoid[Map[K, V]] {
+    def id: Map[K, V] = Map.empty[K, V]
+    def op(x: Map[K, V], y: Map[K, V]): Map[K, V] = MapUtil.unionWith(x, y)(_ |+| _)
+  }
+
   implicit def tuple2Semigroup[A: Semigroup, B: Semigroup]: Semigroup[(A,B)] = new Semigroup[(A,B)] {
     def op(x: (A, B), y: (A, B)): (A, B) = (x._1 |+| y._1, x._2 |+| y._2)
+  }
+
+}
+
+object MapUtil {
+  /** Helpers from scalaz */
+
+  /** Union, resolving collisions with `f`, where the first arg is
+    * guaranteed to be from `m1`, the second from `m2`.
+    */
+  def unionWith[K,A](m1: Map[K, A], m2: Map[K, A])(f: (A, A) => A): Map[K, A] =
+    unionWithKey(m1, m2)((_, x, y) => f(x, y))
+
+  /** Like `unionWith`, but telling `f` about the key. */
+  def unionWithKey[K,A](m1: Map[K, A], m2: Map[K, A])(f: (K, A, A) => A): Map[K, A] = {
+    val diff = m2 -- m1.keySet
+    val aug = m1 map {
+      case (k, v) => if (m2 contains k) k -> f(k, v, m2(k)) else (k, v)
+    }
+    aug ++ diff
   }
 
 }
