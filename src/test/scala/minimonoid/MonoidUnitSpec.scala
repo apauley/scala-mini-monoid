@@ -18,6 +18,11 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
       (x |+| y) |+| z must_== x |+| (y |+| z)
     }
 
+    "satisfy monoid identity laws" in prop { (x: Int) =>
+      x |+| intMonoid.id must_== x
+      intMonoid.id |+| x must_== x
+    }
+
   }
 
   "The String monoid" should {
@@ -30,6 +35,11 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     "satisfy semigroup associativity" in prop { (values: (String, String, String)) =>
       val (x,y,z) = values
       (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
+    "satisfy monoid identity laws" in prop { (x: String) =>
+      x |+| stringMonoid.id must_== x
+      stringMonoid.id |+| x must_== x
     }
 
   }
@@ -46,6 +56,12 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
       val (x,y,z) = values
       (x |+| y) |+| z must_== x |+| (y |+| z)
     }
+
+    "satisfy monoid identity laws" in prop { (x: List[Int]) =>
+      x |+| listMonoid[Int].id must_== x
+      listMonoid[Int].id |+| x must_== x
+    }
+
 
   }
 
@@ -68,6 +84,11 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
       (x |+| y) |+| z must_== x |+| (y |+| z)
     }
 
+    "satisfy monoid identity laws" in prop { (x: Option[Int]) =>
+      x |+| optionMonoid[Int].id must_== x
+      optionMonoid[Int].id |+| x must_== x
+    }
+
   }
 
   "The Map monoid" should {
@@ -79,6 +100,11 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     "satisfy semigroup associativity" in prop { (values: (Map[Char, Int], Map[Char, Int], Map[Char, Int])) =>
       val (x,y,z) = values
       (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
+    "satisfy monoid identity laws" in prop { (x: Map[Char, Int]) =>
+      x |+| mapMonoid[Char, Int].id must_== x
+      mapMonoid[Char, Int].id |+| x must_== x
     }
 
   }
