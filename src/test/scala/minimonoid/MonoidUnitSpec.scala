@@ -1,16 +1,23 @@
 package minimonoid
 
+import org.specs2.ScalaCheck
 import org.specs2.mutable._
 
 import MonoidInstances._
 import Semigroup.SemigroupOps
 
-class MonoidUnitSpec extends Specification {
+class MonoidUnitSpec extends Specification with ScalaCheck {
 
   "The Int monoid" should {
     "pass some concrete tests" in {
       1 |+| 44 must_== 45
     }
+
+    "satisfy semigroup associativity" in prop { (values: (Int, Int, Int)) =>
+      val (x,y,z) = values
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
   }
 
   "The String monoid" should {
@@ -19,6 +26,12 @@ class MonoidUnitSpec extends Specification {
       "Foo" |+| "" must_== "Foo"
       "" |+| "Bar" must_== "Bar"
     }
+
+    "satisfy semigroup associativity" in prop { (values: (String, String, String)) =>
+      val (x,y,z) = values
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
   }
 
   "The List monoid" should {
@@ -28,6 +41,12 @@ class MonoidUnitSpec extends Specification {
       List(List("hi", "bye"), List("foo")) |+| List(List("bar")) must_== List(List("hi", "bye"), List("foo"), List("bar"))
       List(None, Some("x")) |+| Nil must_== List(None, Some("x"))
     }
+
+    "satisfy semigroup associativity" in prop { (values: (List[Int], List[Int], List[Int])) =>
+      val (x,y,z) = values
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
   }
 
   "The Option monoid" should {
@@ -43,6 +62,12 @@ class MonoidUnitSpec extends Specification {
       None |+| Option("Blorp") must_== Option("Blorp")
       Option("") |+| None must_== Option("")
     }
+
+    "satisfy semigroup associativity" in prop { (values: (Option[Int], Option[Int], Option[Int])) =>
+      val (x,y,z) = values
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
   }
 
   "The Map monoid" should {
@@ -50,6 +75,12 @@ class MonoidUnitSpec extends Specification {
       Map.empty[Int, String] |+| Map(1 -> "foo", 4 -> "bar") must_== Map(1 -> "foo", 4 -> "bar")
       Map(1 -> "foo", 2 -> "baz") |+| Map(1 -> "bar", 3 -> "hi") must_== Map(1 -> "foobar", 2 -> "baz", 3 -> "hi")
     }
+
+    "satisfy semigroup associativity" in prop { (values: (Map[Char, Int], Map[Char, Int], Map[Char, Int])) =>
+      val (x,y,z) = values
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
   }
 
   "The Tuple2 monoid" should {
@@ -58,5 +89,11 @@ class MonoidUnitSpec extends Specification {
       val t2 = (0,6)
       t1 |+| t2 must_== ((1,8))
     }
+
+    "satisfy semigroup associativity" in prop { (values: ((String, Int), (String, Int), (String, Int))) =>
+      val (x,y,z) = values
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
   }
 }
