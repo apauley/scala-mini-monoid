@@ -155,5 +155,10 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
       (x |+| y) |+| z must_== x |+| (y |+| z)
     }
 
+    "satisfy monoid identity laws" in prop { (x: (String, Option[Int])) =>
+      x |+| tuple2Monoid[String, Option[Int]].id must_== x
+      tuple2Monoid[String, Option[Int]].id |+| x must_== x
+    }
+
   }
 }

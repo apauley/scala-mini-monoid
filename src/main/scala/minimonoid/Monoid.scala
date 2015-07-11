@@ -89,7 +89,8 @@ object MonoidInstances {
     def op(x: Map[K, V], y: Map[K, V]): Map[K, V] = MapUtil.unionWith(x, y)(_ |+| _)
   }
 
-  implicit def tuple2Semigroup[A: Semigroup, B: Semigroup]: Semigroup[(A,B)] = new Semigroup[(A,B)] {
+  implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A,B)] = new Monoid[(A,B)] {
+    def id: (A,B) = (implicitly[Monoid[A]].id, implicitly[Monoid[B]].id)
     def op(x: (A, B), y: (A, B)): (A, B) = (x._1 |+| y._1, x._2 |+| y._2)
   }
 
