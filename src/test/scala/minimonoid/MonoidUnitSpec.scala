@@ -25,6 +25,40 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
 
   }
 
+  "The Float monoid" should {
+    "pass some concrete tests" in {
+      1.2f |+| 4.3f must_== 5.5f
+    }
+
+    "satisfy semigroup associativity" in {
+      val (x,y,z) = (0.4f, 4.6f, 12.0f)
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
+    "satisfy monoid identity laws" in prop { (x: Float) =>
+      x |+| floatMonoid.id must_== x
+      floatMonoid.id |+| x must_== x
+    }
+
+  }
+
+  "The Double monoid" should {
+    "pass some concrete tests" in {
+      1.2d |+| 4.3d must_== 5.5d
+    }
+
+    "satisfy semigroup associativity" in {
+      val (x,y,z) = (0.4d, 4.6d, 12.0d)
+      (x |+| y) |+| z must_== x |+| (y |+| z)
+    }
+
+    "satisfy monoid identity laws" in prop { (x: Double) =>
+      x |+| doubleMonoid.id must_== x
+      doubleMonoid.id |+| x must_== x
+    }
+
+  }
+
   "The String monoid" should {
     "pass some concrete tests" in {
       "Hello, " |+| "world!" must_== "Hello, world!"

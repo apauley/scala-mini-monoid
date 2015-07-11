@@ -54,6 +54,16 @@ object MonoidInstances {
     def op(x: Int, y: Int): Int = x+y
   }
 
+  implicit val floatMonoid = new Monoid[Float] {
+    def id: Float = 0f
+    def op(x: Float, y: Float): Float = x+y
+  }
+
+  implicit val doubleMonoid = new Monoid[Double] {
+    def id: Double = 0d
+    def op(x: Double, y: Double): Double = x+y
+  }
+
   implicit val stringMonoid = new Monoid[String] {
     def id: String = ""
     def op(x: String, y: String): String = x+y
