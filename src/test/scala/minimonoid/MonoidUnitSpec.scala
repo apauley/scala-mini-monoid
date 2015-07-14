@@ -161,4 +161,27 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
   }
+
+  "reduceM" should {
+    import MonoidOps._
+
+    "easily reduce lists containing integers" in {
+      List(1,4,6).reduceM must_== 11
+    }
+
+    "easily reduce lists containing strings" in {
+      List("foo", "bar", "baz").reduceM must_== "foobarbaz"
+    }
+
+    "easily reduce lists containing optional strings" in {
+      List(Option("foo"), None, Option("baz")).reduceM must_== Some("foobaz")
+    }
+
+    "easily reduce nested lists" in {
+      List(List(1,4), List(2,3)).reduceM must_== List(1,4,2,3)
+      List(List(1,4), List(2,3)).reduceM.reduceM must_== 1+4+2+3
+      List(List("foo", "bar", "baz"), List("Hello", "world")).reduceM.reduceM must_== "foobarbazHelloworld"
+    }
+
+  }
 }

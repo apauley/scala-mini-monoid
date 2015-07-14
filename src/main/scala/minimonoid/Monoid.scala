@@ -115,3 +115,15 @@ object MapUtil {
   }
 
 }
+
+object Monoid {
+  def reduce[M: Monoid](l: List[M]): M = l.foldLeft(implicitly[Monoid[M]].id)(implicitly[Monoid[M]].op)
+}
+
+object MonoidOps {
+
+  implicit class ListOps[A: Monoid](l: List[A]) {
+    def reduceM: A = Monoid.reduce[A](l)
+  }
+
+}
