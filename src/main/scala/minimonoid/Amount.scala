@@ -3,8 +3,8 @@ package minimonoid
 object Amount {
 
   implicit def amountMonoid: Monoid[Amount] = new Monoid[Amount] {
-    def id: Amount = Amount(Map.empty[StableCurrency, Int])
-    def op(x: Amount, y: Amount): Amount = Amount(MapUtil.unionWith(x.values, y.values)(_ + _))
+    def empty: Amount = Amount(Map.empty[StableCurrency, Int])
+    def combine(x: Amount, y: Amount): Amount = Amount(MapUtil.unionWith(x.values, y.values)(_ + _))
   }
 
   implicit class AmountOps(i: Int) {

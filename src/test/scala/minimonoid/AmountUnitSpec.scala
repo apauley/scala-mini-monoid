@@ -27,8 +27,8 @@ class AmountUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: Amount) =>
-      x |+| amountMonoid.id must_== x
-      amountMonoid.id |+| x must_== x
+      x |+| amountMonoid.empty must_== x
+      amountMonoid.empty |+| x must_== x
     }
 
   }

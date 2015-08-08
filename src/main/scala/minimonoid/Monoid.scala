@@ -1,48 +1,51 @@
 package minimonoid
 
 /**
- * A minimal self-contained Monoid implementation.
+ * A minimal self-contained monoid implementation with no external dependencies.
  *
- * There are already lots of excellent Monoid implementations out there:
- * have a look at cats or scalaz and rather use those if you can.
+ * There are already lots of excellent monoid implementations out there:
+ * have a look at `cats` or `scalaz` and rather use those if you can.
  *
  * - https://github.com/non/cats
  * - https://github.com/scalaz/scalaz
  *
- * This implementation may be useful to learn more about Monoids,
- * or if you cannot include other dependencies in your project.
+ * This implementation is based on the monoid from https://github.com/non/algebra
+ * As such it should be compatible with the `cats` monoid, since `cats` uses `algebra`.
+ *
+ * This code may be useful if you want to learn more about monoids and how easy it is to write one,
+ * or if you quickly want to use a cats-compatible monoid but cannot include other dependencies in your project.
  *
  * https://github.com/apauley/scala-mini-monoid
  */
 
 /**
- * A semigroup is any set `A` with an associative operation (`op`).
+ * A semigroup is any set `A` with an associative operation (`combine`).
  *
  * Have a look at a detailed implementation for comparison:
- * https://github.com/non/spire/blob/master/core/src/main/scala/spire/algebra/Semigroup.scala
+ * https://github.com/non/algebra/blob/master/core/src/main/scala/algebra/Semigroup.scala
  */
 trait Semigroup[A] {
-  def op(x: A, y: A): A
+  def combine(x: A, y: A): A
 }
 
 object Semigroup {
   /** Provide a |+| operator to anything that implements Semigroup */
   implicit class SemigroupOps[A](sg1: A)(implicit sg: Semigroup[A]) {
-    def |+|(sg2: A): A = sg.op(sg1, sg2)
+    def |+|(sg2: A): A = sg.combine(sg1, sg2)
   }
 }
 
 /**
  * A monoid is a semigroup with an identity. A monoid is a specialization of a
  * semigroup, so its operation must be associative. Additionally,
- * `op(x, id) == op(id, x) == x`. For example, if we have `Monoid[String]`,
- * with `op` as string concatenation, then `id = ""`.
+ * `combine(x, empty) == combine(empty, x) == x`. For example, if we have `Monoid[String]`,
+ * with `combine` as string concatenation, then `empty = ""`.
  *
  * Have a look at a detailed implementation for comparison:
- * https://github.com/non/spire/blob/master/core/src/main/scala/spire/algebra/Monoid.scala
+ * https://github.com/non/algebra/blob/master/core/src/main/scala/algebra/Monoid.scala
  */
 trait Monoid[A] extends Semigroup[A] {
-  def id: A
+  def empty: A
 }
 
 object MonoidInstances {
@@ -50,33 +53,33 @@ object MonoidInstances {
   import Semigroup.SemigroupOps
 
   implicit val intMonoid = new Monoid[Int] {
-    def id: Int = 0
-    def op(x: Int, y: Int): Int = x+y
+    def empty: Int = 0
+    def combine(x: Int, y: Int): Int = x+y
   }
 
   implicit val floatMonoid = new Monoid[Float] {
-    def id: Float = 0f
-    def op(x: Float, y: Float): Float = x+y
+    def empty: Float = 0f
+    def combine(x: Float, y: Float): Float = x+y
   }
 
   implicit val doubleMonoid = new Monoid[Double] {
-    def id: Double = 0d
-    def op(x: Double, y: Double): Double = x+y
+    def empty: Double = 0d
+    def combine(x: Double, y: Double): Double = x+y
   }
 
   implicit val stringMonoid = new Monoid[String] {
-    def id: String = ""
-    def op(x: String, y: String): String = x+y
+    def empty: String = ""
+    def combine(x: String, y: String): String = x+y
   }
 
   implicit def listMonoid[A: Semigroup]: Monoid[List[A]] = new Monoid[List[A]] {
-    def id: List[A] = Nil
-    def op(x: List[A], y: List[A]): List[A] = x ++ y
+    def empty: List[A] = Nil
+    def combine(x: List[A], y: List[A]): List[A] = x ++ y
   }
 
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
-    def id: Option[A] = None
-    def op(ox: Option[A], oy: Option[A]): Option[A] = (ox, oy) match {
+    def empty: Option[A] = None
+    def combine(ox: Option[A], oy: Option[A]): Option[A] = (ox, oy) match {
       case (Some(x), Some(y)) => Some(x |+| y)
       case (None, None) => None
       case (x, None) => x
@@ -85,13 +88,13 @@ object MonoidInstances {
   }
 
   implicit def mapMonoid[K, V: Semigroup]: Monoid[Map[K, V]] = new Monoid[Map[K, V]] {
-    def id: Map[K, V] = Map.empty[K, V]
-    def op(x: Map[K, V], y: Map[K, V]): Map[K, V] = MapUtil.unionWith(x, y)(_ |+| _)
+    def empty: Map[K, V] = Map.empty[K, V]
+    def combine(x: Map[K, V], y: Map[K, V]): Map[K, V] = MapUtil.unionWith(x, y)(_ |+| _)
   }
 
   implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A,B)] = new Monoid[(A,B)] {
-    def id: (A,B) = (implicitly[Monoid[A]].id, implicitly[Monoid[B]].id)
-    def op(x: (A, B), y: (A, B)): (A, B) = (x._1 |+| y._1, x._2 |+| y._2)
+    def empty: (A,B) = (implicitly[Monoid[A]].empty, implicitly[Monoid[B]].empty)
+    def combine(x: (A, B), y: (A, B)): (A, B) = (x._1 |+| y._1, x._2 |+| y._2)
   }
 
 }
@@ -117,7 +120,7 @@ object MapUtil {
 }
 
 object Monoid {
-  def reduce[M: Monoid](l: List[M]): M = l.foldLeft(implicitly[Monoid[M]].id)(implicitly[Monoid[M]].op)
+  def reduce[M: Monoid](l: List[M]): M = l.foldLeft(implicitly[Monoid[M]].empty)(implicitly[Monoid[M]].combine)
 }
 
 object MonoidOps {

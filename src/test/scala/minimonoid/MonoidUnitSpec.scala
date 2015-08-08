@@ -19,8 +19,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: Int) =>
-      x |+| intMonoid.id must_== x
-      intMonoid.id |+| x must_== x
+      x |+| intMonoid.empty must_== x
+      intMonoid.empty |+| x must_== x
     }
 
   }
@@ -36,8 +36,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: Float) =>
-      x |+| floatMonoid.id must_== x
-      floatMonoid.id |+| x must_== x
+      x |+| floatMonoid.empty must_== x
+      floatMonoid.empty |+| x must_== x
     }
 
   }
@@ -53,8 +53,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: Double) =>
-      x |+| doubleMonoid.id must_== x
-      doubleMonoid.id |+| x must_== x
+      x |+| doubleMonoid.empty must_== x
+      doubleMonoid.empty |+| x must_== x
     }
 
   }
@@ -72,8 +72,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: String) =>
-      x |+| stringMonoid.id must_== x
-      stringMonoid.id |+| x must_== x
+      x |+| stringMonoid.empty must_== x
+      stringMonoid.empty |+| x must_== x
     }
 
   }
@@ -92,8 +92,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: List[Int]) =>
-      x |+| listMonoid[Int].id must_== x
-      listMonoid[Int].id |+| x must_== x
+      x |+| listMonoid[Int].empty must_== x
+      listMonoid[Int].empty |+| x must_== x
     }
 
 
@@ -119,8 +119,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: Option[Int]) =>
-      x |+| optionMonoid[Int].id must_== x
-      optionMonoid[Int].id |+| x must_== x
+      x |+| optionMonoid[Int].empty must_== x
+      optionMonoid[Int].empty |+| x must_== x
     }
 
   }
@@ -137,8 +137,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: Map[Char, Int]) =>
-      x |+| mapMonoid[Char, Int].id must_== x
-      mapMonoid[Char, Int].id |+| x must_== x
+      x |+| mapMonoid[Char, Int].empty must_== x
+      mapMonoid[Char, Int].empty |+| x must_== x
     }
 
   }
@@ -156,8 +156,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     }
 
     "satisfy monoid identity laws" in prop { (x: (String, Option[Int])) =>
-      x |+| tuple2Monoid[String, Option[Int]].id must_== x
-      tuple2Monoid[String, Option[Int]].id |+| x must_== x
+      x |+| tuple2Monoid[String, Option[Int]].empty must_== x
+      tuple2Monoid[String, Option[Int]].empty |+| x must_== x
     }
 
   }
