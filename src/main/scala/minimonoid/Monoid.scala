@@ -80,6 +80,8 @@ object MonoidInstances {
 
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
     def empty: Option[A] = None
+
+    @SuppressWarnings(Array("org.brianmckenna.wartremover.warts.Throw")) // No idea why WartRemover complains about throw here
     def combine(ox: Option[A], oy: Option[A]): Option[A] = (ox, oy) match {
       case (Some(x), Some(y)) => Some(x |+| y)
       case (None, None) => None
@@ -112,6 +114,8 @@ object MapUtil {
   /** Like `unionWith`, but telling `f` about the key. */
   def unionWithKey[K,A](m1: Map[K, A], m2: Map[K, A])(f: (K, A, A) => A): Map[K, A] = {
     val diff = m2 -- m1.keySet
+
+    @SuppressWarnings(Array("org.brianmckenna.wartremover.warts.Throw")) // No idea why WartRemover complains about throw here
     val aug = m1 map {
       case (k, v) => if (m2 contains k) k -> f(k, v, m2(k)) else (k, v)
     }

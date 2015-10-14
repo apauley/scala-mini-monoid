@@ -31,7 +31,6 @@ scalacOptions in Test ++= Seq("-Yrangepos")
 // Docs on each type of check is in the WartRemover README: https://github.com/puffnfresh/wartremover
 wartremoverErrors in (Compile, compile) ++= Warts.allBut(
   Wart.FinalCaseClass,
-  Wart.Throw,
   Wart.NoNeedForMonad)
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
