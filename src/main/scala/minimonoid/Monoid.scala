@@ -30,6 +30,7 @@ trait Semigroup[A] {
 
 object Semigroup {
   /** Provide a |+| operator to anything that implements Semigroup */
+  @SuppressWarnings(Array("org.brianmckenna.wartremover.warts.ExplicitImplicitTypes"))
   implicit class SemigroupOps[A](sg1: A)(implicit sg: Semigroup[A]) {
     def |+|(sg2: A): A = sg.combine(sg1, sg2)
   }
@@ -52,22 +53,22 @@ object MonoidInstances {
 
   import Semigroup.SemigroupOps
 
-  implicit val intMonoid = new Monoid[Int] {
+  implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
     def empty: Int = 0
     def combine(x: Int, y: Int): Int = x+y
   }
 
-  implicit val floatMonoid = new Monoid[Float] {
+  implicit val floatMonoid: Monoid[Float] = new Monoid[Float] {
     def empty: Float = 0f
     def combine(x: Float, y: Float): Float = x+y
   }
 
-  implicit val doubleMonoid = new Monoid[Double] {
+  implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
     def empty: Double = 0d
     def combine(x: Double, y: Double): Double = x+y
   }
 
-  implicit val stringMonoid = new Monoid[String] {
+  implicit val stringMonoid: Monoid[String] = new Monoid[String] {
     def empty: String = ""
     def combine(x: String, y: String): String = x+y
   }
