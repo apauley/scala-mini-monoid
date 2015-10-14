@@ -17,7 +17,7 @@ object Amount {
 
 }
 
-case class Amount(values: Map[StableCurrency, Int])
+final case class Amount(values: Map[StableCurrency, Int])
 
 sealed trait StableCurrency
 sealed trait Livestock extends StableCurrency
