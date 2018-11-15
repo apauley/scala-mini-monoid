@@ -2,11 +2,15 @@ name := "mini-monoid"
 
 version := "0.1"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.12"
 
-libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "2.4.2" % "test"
+val specs2Version = "3.8.9"
+val specs2Deps = Seq(
+  "org.specs2" %% "specs2-core" % specs2Version % "test",
+  "org.specs2" %% "specs2-scalacheck" % specs2Version % "test",
 )
+
+libraryDependencies ++= specs2Deps
 
 // http://tpolecat.github.io/2014/04/11/scalac-flags.html
 scalacOptions ++= Seq(

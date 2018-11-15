@@ -109,7 +109,8 @@ class MonoidUnitSpec extends Specification with ScalaCheck {
     "pass some concrete string tests" in {
       Option("Bleep") |+| Option("Blorp") must_== Option("BleepBlorp")
       Option("Bleep") |+| Option("") must_== Option("Bleep")
-      None |+| Option("Blorp") must_== Option("Blorp")
+      val nothing: Option[String] = None
+      nothing |+| Option("Blorp") must_== Option("Blorp")
       Option("") |+| None must_== Option("")
     }
 
