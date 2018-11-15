@@ -81,7 +81,6 @@ object MonoidInstances {
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
     def empty: Option[A] = None
 
-    @SuppressWarnings(Array("org.brianmckenna.wartremover.warts.Throw")) // No idea why WartRemover complains about throw here
     def combine(ox: Option[A], oy: Option[A]): Option[A] = (ox, oy) match {
       case (Some(x), Some(y)) => Some(x |+| y)
       case (None, None) => None
